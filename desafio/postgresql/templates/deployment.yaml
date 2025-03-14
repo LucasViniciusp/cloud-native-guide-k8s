@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.postgres.spec.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-postgresql
+          image: "{{ .Values.postgres.image.name }}:{{ .Values.postgres.image.tag }}"
+          imagePullPolicy: {{ .Values.postgres.image.imagepullpolicy }}
+          ports:
+            - containerPort: {{ .Values.postgres.spec.containerPort }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+            - configMapRef:
+                name: {{ .Release.Name }}-config

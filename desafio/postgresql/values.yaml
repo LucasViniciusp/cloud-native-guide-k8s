@@ -1,0 +1,17 @@
+postgres:
+  spec:
+    replicas: 1
+    containerPort: 5432
+
+  auth:
+    username: postgres
+    password: postgres
+    database: cloudnative
+
+  image:
+    name: "postgres"
+    tag: "15"
+    imagepullpolicy: "IfNotPresent"
+
+  service:
+    type: ClusterIP

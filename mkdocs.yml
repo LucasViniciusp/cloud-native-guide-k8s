@@ -1,0 +1,44 @@
+---
+site_name: Cloud Native
+repo_url: https://github.com/LucasViniciusp/cloud-native-guide-k8s
+site_url: "https://lucasviniciusp.github.io/cloud-native-guide-k8s/"
+theme:
+  name: material
+  logo: assets/instruct.png
+  language: pt-BR
+  custom_dir: docs/assets
+  features:
+    - navigation.tabs.sticky
+    - content.code.annotate
+    - navigation.instant
+    - navigation.footer
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-3
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+markdown_extensions:
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      linenums: true
+      anchor_linenums: false
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.betterem
+  - pymdownx.details
+  - pymdownx.superfences
+  - admonition
+  - attr_list
+  - def_list

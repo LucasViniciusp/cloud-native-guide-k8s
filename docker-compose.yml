@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  cloud-native:
+    image: squidfunk/mkdocs-material
+    container_name: cloud-native
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - .:/docs
