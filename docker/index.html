@@ -1,0 +1,1399 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lucasviniciusp.github.io/cloud-native-guide-k8s/docker/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
+    
+    
+      
+        <title>Docker - Cloud Native</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1d29e8d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#docker" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Cloud Native" class="md-header__button md-logo" aria-label="Cloud Native" data-md-component="logo">
+      
+  <img src="../assets/instruct.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cloud Native
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Limpar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Cloud Native" class="md-nav__button md-logo" aria-label="Cloud Native" data-md-component="logo">
+      
+  <img src="../assets/instruct.png" alt="logo">
+
+    </a>
+    Cloud Native
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desafio/" class="md-nav__link">
+        Desafio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Docker
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-docker" class="md-nav__link">
+    🐳 Install Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="🐳 Install Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-privileges" class="md-nav__link">
+    Root privileges
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interagindo-com-o-container" class="md-nav__link">
+    Interagindo com o container
+  </a>
+  
+    <nav class="md-nav" aria-label="Interagindo com o container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    Hello World
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    Basic usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-instructions" class="md-nav__link">
+    Dockerfile Instructions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compartilhando-imagens" class="md-nav__link">
+    Compartilhando imagens
+  </a>
+  
+    <nav class="md-nav" aria-label="Compartilhando imagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#criando-meu-proprio-registry" class="md-nav__link">
+    Criando meu próprio registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker-compose
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker-compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-started_1" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turbinando-o-docker-compose" class="md-nav__link">
+    Turbinando o docker-compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas-usando-docker" class="md-nav__link">
+    Boas praticas usando Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Boas praticas usando Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basico" class="md-nav__link">
+    Básico
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faca-uso-de-multi-stage-build" class="md-nav__link">
+    Faça uso de Multi-stage build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evite-utilizar-imagens-do-alpine" class="md-nav__link">
+    Evite utilizar imagens do Alpine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../helm/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        Kubernetes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resolution/" class="md-nav__link">
+        Desafio
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-docker" class="md-nav__link">
+    🐳 Install Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="🐳 Install Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-privileges" class="md-nav__link">
+    Root privileges
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interagindo-com-o-container" class="md-nav__link">
+    Interagindo com o container
+  </a>
+  
+    <nav class="md-nav" aria-label="Interagindo com o container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    Hello World
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    Basic usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-instructions" class="md-nav__link">
+    Dockerfile Instructions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compartilhando-imagens" class="md-nav__link">
+    Compartilhando imagens
+  </a>
+  
+    <nav class="md-nav" aria-label="Compartilhando imagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#criando-meu-proprio-registry" class="md-nav__link">
+    Criando meu próprio registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker-compose
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker-compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-started_1" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turbinando-o-docker-compose" class="md-nav__link">
+    Turbinando o docker-compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas-usando-docker" class="md-nav__link">
+    Boas praticas usando Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Boas praticas usando Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basico" class="md-nav__link">
+    Básico
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faca-uso-de-multi-stage-build" class="md-nav__link">
+    Faça uso de Multi-stage build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evite-utilizar-imagens-do-alpine" class="md-nav__link">
+    Evite utilizar imagens do Alpine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s/edit/master/docs/docker.md" title="Editar esta página" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="docker">Docker</h1>
+<p>Usando o Docker, podemos criar de forma consistente e automática ambientes isolados e portáteis para aplicações.</p>
+<h2 id="install-docker">🐳 <strong>Install Docker</strong></h2>
+<p>O Docker fornece um script pratico em <a href="https://get.docker.com">get.docker.com</a> para instalar o Docker.</p>
+<div class="admonition warning">
+<p class="admonition-title">Esse script não é recomendado para ambientes produtivos</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo -i
+curl -fsSL https://get.docker.com <span class="p">|</span> bash
+
+systemctl <span class="nb">enable</span> docker
+systemctl restart docker
+
+docker ps
+</code></pre></div></td></tr></table></div>
+</div>
+<h3 id="root-privileges"><strong>Root privileges</strong></h3>
+<p>Por padrão, o daemon do Docker faz bind em um socket Unix, e não em uma porta TCP. Sockets Unix, por sua vez, são de propriedade e de uso exclusivo do usuário root (por isso o Docker sempre é iniciado como root).</p>
+<p>Para evitar o uso contínuo do comando sudo ao rodar comandos Docker, utilize o grupo docker que é criado durante a instalação e adicione o seu usuário a ele.</p>
+<p>Esse procedimento permite que o usuário tenha os mesmos privilégios do usuário root em operações relacionadas ao Docker.</p>
+<p>Mais informações: <a href="https://docs.docker.com/engine/security/">https://docs.docker.com/engine/security/</a>.</p>
+<p>Para criar um grupo no Linux e adicionar um usuário:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo usermod -aG docker $(whoami)
+</code></pre></div></td></tr></table></div>
+<h2 id="interagindo-com-o-container"><strong>Interagindo com o container</strong></h2>
+<p>O docker é acessado via terminal através do comando <code>docker</code>.</p>
+<h3 id="hello-world">Hello World</h3>
+<p>O Docker disponibiliza uma imagem personalizada chamada "hello-world", que serve para testar a instalação e validar se tudo está funcionando conforme o esperado.</p>
+<p>Para executar um contêiner, utilizamos o parâmetro <code>run</code> do comando <code>docker</code>.</p>
+<div class="admonition example">
+<p class="admonition-title">Exemplos:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Execute um container hello-world:</span>
+docker container run hello-world
+
+<span class="c1"># Execute um container com Ubuntu:</span>
+docker run -it ubuntu bash
+</code></pre></div></td></tr></table></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Docker <code>RUN</code> common parameters</p>
+<ul>
+<li>Utilizando o parâmetro <code>-d</code> faz com que o container seja executado em background.</li>
+<li><code>-p</code>: Publica/expõe a(s) porta(s) de um contêiner para o host.</li>
+<li><code>-e</code>: Define variáveis de ambiente.</li>
+<li><code>-it</code>: cria uma sessão que permite a interação em tempo real com o contêiner.<ul>
+<li><code>-i</code>: permite que você mantenha a entrada padrão (stdin) aberta para interagir com o contêiner em tempo real.</li>
+<li><code>-t</code>: aloca um pseudo-terminal para o contêiner, permitindo que você visualize a saída do contêiner de forma formatada.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Fluxo de criação e execução de um container:</p>
+<ol>
+<li>O cliente do Docker se comunica com o daemon do Docker.</li>
+<li>O daemon do Docker baixa a imagem do registro caso ela não exista no host.</li>
+<li>O daemon do Docker cria e executa um novo contêiner a partir da imagem definida.</li>
+</ol>
+</div>
+<h3 id="basic-usage">Basic usage</h3>
+<div class="admonition tip">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Executa um container CentOS 7 e cria uma sessão iterativa</span>
+docker run -it centos:7 <span class="c1"># (1)</span>
+
+<span class="c1"># Lista os containers em execução</span>
+docker ps <span class="c1"># (2)</span>
+
+<span class="c1"># Pausa os containers em execução</span>
+docker pause &lt;container-id/container-name&gt;
+
+<span class="c1"># Interrompe um container</span>
+docker stop &lt;container-id/container-name&gt;
+
+<span class="c1"># Interrompe todos os containers</span>
+docker stop <span class="k">$(</span>docker ps -qa<span class="k">)</span>
+
+<span class="c1"># Inicia um container</span>
+docker start &lt;container-id/container-name&gt;
+
+<span class="c1"># Reinicia um container</span>
+docker restart &lt;container-id/container-name&gt;
+
+<span class="c1"># Visualizar o uso de recursos dos containers</span>
+docker stats
+
+<span class="c1"># Visualizar os logs de um container</span>
+docker logs &lt;container-id/container-name&gt;
+
+<span class="c1"># Inspecionar toda a configuração de um container # (3)</span>
+docker inspect &lt;container-id/container-name&gt;
+
+<span class="c1"># Delete/Remove um container parado</span>
+docker rm &lt;container-id/container-name&gt; <span class="c1"># (4)</span>
+
+<span class="c1"># Atualizar o valor limite de uso dos recursos do contêiner</span>
+docker update -m 256m --cpus<span class="o">=</span><span class="m">1</span> &lt;container-id/container-name&gt; <span class="c1"># (5)</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Você pode usar qualquer outra imagem disponível no Docker Hub ou no seu registro privado.</li>
+<li>Use a opção -a/-all para listar até mesmo os contêineres parados.</li>
+<li>O comando "inspect" é extremamente útil para depuração.</li>
+<li>Quando um contêiner é excluído, a imagem permanece no host.</li>
+<li>Por padrão, o contêiner não tem limite de recursos. <br>
+   Use docker update --help para verificar as opções disponíveis. <br>
+   Isso funciona mesmo para contêineres em execução.</li>
+</ol>
+</div>
+<h2 id="dockerfile">Dockerfile</h2>
+<p>O <code>Dockerfile</code> é um arquivo de configuração usado para definir e construir imagens de contêineres Docker. Nele, você pode especificar a imagem base, as dependências, as variáveis de ambiente e os comandos necessários para construir uma imagem de contêiner Docker para o seu projeto.</p>
+<h3 id="getting-started">Getting started</h3>
+<div class="admonition note">
+<p class="admonition-title">Para iniciar, você apenas precisa criar o arquivo: <code>Dockerfile</code></p>
+<p><code class="highlight">Dockerfile</code></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>mkdir /home/cloud-native/
+<span class="nb">cd</span> /home/cloud-native/
+touch Dockerfile
+</code></pre></div></td></tr></table></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Edite seu arquivo com as seguintes instruções:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>nano Dockerfile
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
+
+<span class="k">RUN</span><span class="w"> </span>/bin/echo <span class="s2">&quot;HELLO FROM INSTRUCT CLOUD-NATIVE!!!&quot;</span> &gt; /usr/share/nginx/html/index.html
+
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;nginx&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-g&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;daemon off;&quot;</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Execute o comando <code>docker build</code> para criar uma imagem usando o <code>Dockerfile</code>.</p>
+<div class="admonition tip">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker build -t cloud-native:1.0 .
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">[</span>+<span class="o">]</span> Building <span class="m">0</span>.7s <span class="o">(</span><span class="m">6</span>/6<span class="o">)</span> FINISHED
+<span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load build definition from Dockerfile                                   <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring dockerfile: 37B                                                    <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load .dockerignore                                                      <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring context: 2B                                                        <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load metadata <span class="k">for</span> docker.io/library/ubuntu:latest                       <span class="m">0</span>.6s
+<span class="o">=</span>&gt; <span class="o">[</span><span class="m">1</span>/2<span class="o">]</span> FROM docker.io/library/ubuntu@sha256:ac5822fa348fd7....                      <span class="m">0</span>.0s
+<span class="o">=</span>&gt; CACHED <span class="o">[</span><span class="m">2</span>/2<span class="o">]</span> RUN /bin/echo <span class="s2">&quot;HELLO FROM INSTRUCT CLOUD-NATIVE&quot;</span>                      <span class="m">0</span>.0s
+<span class="o">=</span>&gt; exporting to image                                                                 <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">=</span>&gt; exporting layers                                                                <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">=</span>&gt; writing image sha256:ede41435957b1a79925c3595759b11a6a...                       <span class="m">0</span>.0s
+<span class="o">=</span>&gt; <span class="o">=</span>&gt; naming to docker.io/library/cloud-native                                        <span class="m">0</span>.0s
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker run -d -p <span class="m">80</span>:80 cloud-native:1.0
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Esse comando irá executar um container utilizando a imagem gerada pelo <code>Dockerfile</code> que você criou, e então você poderá ver uma mensagem no seu <a href="http://localhost">localhost</a></p>
+<h3 id="dockerfile-instructions">Dockerfile <strong><em>Instruct</em></strong>ions</h3>
+<p>Comando disponíveis na criação de um Dockerfile:</p>
+<div class="admonition note">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">FROM</span><span class="s">:</span>
+    - Especifica a imagem base para o Dockerfile.
+    - Deve ser a primeira linha <span class="k">do</span> Dockerfile.
+
+USER:
+    - Determina qual usuário será usado na imagem. Por padrão, é o usuário root.
+
+WORKDIR:
+    - Altera o diretório de trabalho dentro <span class="k">do</span> contêiner.
+    - O padrão é <span class="s2">&quot;/&quot;</span> <span class="o">(</span>raiz<span class="o">)</span>.
+
+COPY:
+    - Copia arquivos e diretórios para o sistema de arquivos <span class="k">do</span> contêiner.
+
+ADD:
+    - Copia diretórios e arquivos locais ou remotos para o sistema de arquivos <span class="k">do</span> contêiner.
+
+ENV:
+    - Define variáveis de ambiente para o contêiner.
+
+VOLUME:
+    - Cria um ponto de montagem para armazenar dados persistentes.
+
+RUN:
+    - Executa qualquer comando em uma nova camada em cima da imagem.
+
+EXPOSE:
+    - Informa em qual<span class="o">(</span>is<span class="o">)</span> porta<span class="o">(</span>s<span class="o">)</span> o contêiner irá escutar.
+
+CMD:
+    - Especifica o comando padrão a ser executado quando o contêiner é iniciado.
+
+ENTRYPOINT:
+    - Configura o contêiner para executar um executável específico.
+      Quando finalizado, o contêiner também será interrompido.
+</code></pre></div></td></tr></table></div>
+</div>
+<h2 id="compartilhando-imagens">Compartilhando imagens</h2>
+<p>Até então, estamos utilizando o registry <a href="https://hub.docker.com/search?q=">Docker Hub</a> para obter as imagens.</p>
+<p>Para enviar uma imagem para o Docker Hub:</p>
+<div class="admonition tip">
+<p><strong><em>Isso tornará sua imagem disponivel para download para outros usuarios.</em></strong></p>
+<ol>
+<li>Crie uma conta no <a href="https://hub.docker.com/signup">Docker Hub</a></li>
+<li>Faça login com usuário e senha executando:
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker login
+</code></pre></div></td></tr></table></div></li>
+<li>Crie sua imagem usando o <code>Dockerfile</code> que você criou anteriormente, utilizando uma tag:
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker build &lt;your-username&gt;/cloud-native:1.0
+</code></pre></div></td></tr></table></div></li>
+<li>Envie sua imagem para o docker hub registry executando:
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker push &lt;your-username&gt;/cloud-native:1.0
+</code></pre></div></td></tr></table></div></li>
+<li>E é isso, sua imagem agora está disponível no docker hub!!.</li>
+</ol>
+</div>
+<h3 id="criando-meu-proprio-registry">Criando meu próprio registry</h3>
+<p>Embora o Docker Hub seja um registry público confiavel, existem casos em que empresas podem optar por não utilizá-lo e preferir um registry interno, como o <a href="https://landscape.cncf.io/card-mode?category=container-registry&amp;grouping=category&amp;selected=harbor">Harbor</a>!.</p>
+<p>Registries internos fornecem um maior controle sobre a segurança, privacidade, conformidade, melhor desempenho e menor latência.</p>
+<p><strong><em>Criando um registry <code>Distribution</code></em></strong></p>
+<div class="admonition tip">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Crie e execute um registry `Distribution` utilizando docker:</span>
+docker container run -d -p <span class="m">5000</span>:5000 --restart<span class="o">=</span>always --name registry registry
+
+<span class="c1"># Adicione uma Tag a sua imagem:</span>
+docker tag &lt;image-id&gt; localhost:5000/&lt;tag&gt; <span class="c1"># (1)</span>
+
+<span class="c1"># Envie sua imagem para seu registry privado:</span>
+docker push localhost:5000/&lt;tag&gt;
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Ao buildar uma imagem, o docker gera um <code>id</code> que é visível no output do comando!</li>
+</ol>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Outros registries populares:</p>
+<ul>
+<li><a href="https://aws.amazon.com/pt/ecr/">Amazon Elastic Container Registry (ECR)</a></li>
+<li><a href="https://azure.microsoft.com/en-us/products/container-registry">Azure Container Registry (ACR)</a></li>
+<li><a href="https://cloud.google.com/artifact-registry?hl=pt-br">Google Artifact Registry</a></li>
+<li><a href="https://docs.gitlab.com/ee/user/packages/container_registry/">GitLab Container Registry</a></li>
+<li><a href="https://landscape.cncf.io/card-mode?category=container-registry&amp;grouping=category&amp;selected=harbor">Harbor</a></li>
+<li><a href="https://landscape.cncf.io/card-mode?category=container-registry&amp;grouping=category&amp;selected=quay">Quay</a></li>
+</ul>
+</div>
+<h2 id="docker-compose">Docker-compose</h2>
+<p>O Docker Compose é uma ferramenta para definir e gerenciar vários contêineres Docker como uma única aplicação, facilitando a configuração, execução e escalabilidade de serviços através de um único arquivo YAML.</p>
+<h3 id="getting-started_1">Getting started</h3>
+<p>Para iniciar, você apenas precisa criar o arquivo: <code>docker-compose.yaml</code></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>nano docker-compose.yaml
+</code></pre></div></td></tr></table></div>
+<p>Edite seu arquivo com as seguintes instruções:</p>
+<div class="admonition note">
+<p class="admonition-title">docker-compose.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.9&quot;</span><span class="w"></span>
+
+<span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8022:80&quot;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>para utilizar o docker-compose, execute:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker-compose up -d <span class="c1"># (1)</span>
+</code></pre></div></td></tr></table></div></p>
+<ol>
+<li>Se for necessário fazer o build de alguma imagem, você pode adicionar o parâmetro <code>--build</code></li>
+</ol>
+</div>
+<p>Esse <code>docker-compose</code> conta com uma configuração minima:</p>
+<div class="admonition note">
+<p class="admonition-title">Uma <code>network</code> é criada por padrão para garantir a conexão entre os containers</p>
+</div>
+<ul>
+<li>cria um service chamado <code>web</code> utilizando a imagem do <code>nginx</code></li>
+<li>expõe o serviço na porta <a href="http://localhost:8022"><code>8022</code></a> do host</li>
+</ul>
+<h3 id="turbinando-o-docker-compose">Turbinando o docker-compose</h3>
+<p><strong><em>Adicionando um novo service</em></strong></p>
+<p>Vamos adicionar um postgreSQL ao <code>docker-compose</code>:</p>
+<div class="admonition note">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"></span>
+
+<span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx-web</span><span class="w"></span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./Dockerfile</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># target: &lt;stage-name&gt; # (2)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8022:80&quot;</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">db</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:12.1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">database</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;5434:5432&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./postgres:/var/lib/postgresql/data</span><span class="w"> </span><span class="c1"># (1)</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li><code>/var/lib/postgresql/data</code> é o diretório onde os dados ficam armazenados no postgreSQL</li>
+<li>adicione um <code>target</code> se estiver utilizando multi-stage build</li>
+</ol>
+<p>Alterações:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>- Utiliza o <span class="sb">`</span>Dockerfile<span class="sb">`</span> <span class="k">do</span> diretório para buildar a imagem
+- Nomeia os containers atraves da chave container_name
+- Adiciona um banco de dados postgreSQL exposto na porta <span class="sb">`</span><span class="m">5432</span><span class="sb">`</span>:
+- Adiciona um volume para persistir os dados <span class="k">do</span> banco <span class="c1"># (1)</span>
+</code></pre></div></td></tr></table></div></p>
+<ol>
+<li>Este volume persiste os dados do container postgres na pasta <code>/postgres</code> do host.</li>
+</ol>
+</div>
+<p><strong><em>Adicionando variáveis de ambiente</em></strong></p>
+<div class="admonition note">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.9&quot;</span><span class="w"></span>
+
+<span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="nt">web</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx-web</span><span class="w"></span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./Dockerfile</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># target: &lt;stage-name&gt; (1)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8022:80&quot;</span><span class="w"></span>
+
+<span class="nt">db</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:12.1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">database</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;5434:5432&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./postgres:/docker-entrypoint-initdb.d</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.env</span><span class="w"> </span><span class="c1"># (2)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloud-native</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>adicione um <code>target</code> se estiver utilizando multi-stage build</li>
+<li>
+<p>É nescessario que exista o arquivo <code>.env</code></p>
+</li>
+<li>
+<p>Podemos adicionar variáveis de ambiente no serviço adicionando a chave <code>environment</code> e/ou <code>env_file</code></p>
+</li>
+</ol>
+</div>
+<p><strong><em>Adicionando recursos</em></strong></p>
+<div class="admonition note">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.9&quot;</span><span class="w"></span>
+
+<span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="nt">web</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8022:80&quot;</span><span class="w"></span>
+
+<span class="nt">db</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:12.1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span><span class="w"> </span><span class="c1"># (1)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0.5&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;512M&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">reservations</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0.2&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;256M&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;5434:5432&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./postgres:/docker-entrypoint-initdb.d</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.env</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w"></span>
+<span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloud-native</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Parâmetros da chave <code>deploy</code> funcionam apenas ao utilizar <code>docker swarm</code>, exceto pelo <code>resources</code>.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Os parâmetros da chave <code>deploy</code> funcionam apenas ao utilizar <code>docker swarm</code>, valores setados são ignorados pelo <code>docker-compose up</code>, exceto pela chave <code>resources</code>.</p>
+</div>
+</div>
+<h2 id="boas-praticas-usando-docker">Boas praticas usando Docker</h2>
+<div class="admonition tip">
+<p class="admonition-title"><em>Use imagens oficiais e verificadas sempre que possível</em></p>
+</div>
+<h3 id="basico">Básico</h3>
+<div class="admonition note">
+<ul>
+<li>
+<p>Em vez de usar uma imagem base do sistema operacional e instalar o <code>node.js</code>, npm e outras ferramentas necessárias para sua aplicação, utilize a imagem oficial do <code>node</code> para sua aplicação.</p>
+</li>
+<li>
+<p>Se você tiver várias imagens com muitos elementos em comum, considere criar a sua própria <a href="https://docs.docker.com/develop/develop-images/baseimages/">base image</a></p>
+</li>
+<li>Faça uso do arquivo <code>.dockerignore</code> para manter apenas os arquivos necessários no container</li>
+<li>Não utilize a tag <code>latest</code> em produção</li>
+<li>Persista seus dados usando volumes</li>
+</ul>
+</div>
+<h3 id="faca-uso-de-multi-stage-build">Faça uso de Multi-stage build</h3>
+<div class="admonition note">
+<ul>
+<li>
+<p>Você pode ter múltiplas instruções <code>FROM</code>no seu Dockerfile, cada uma inicia um novo estagio do build</p>
+</li>
+<li>
+<p>Você poderá seletivamente copiar artefatos de um estagio para outro</p>
+</li>
+<li>
+<p>permitirá você deixar para trás tudo o que você não quiser na imagem final</p>
+</li>
+<li>
+<p>Você pode especificar um <code>target</code> para o build executando: <code>docker build --target &lt;stage&gt;</code></p>
+</li>
+<li>
+<p>O parâmetro <code>target</code> está disponível no <code>build</code> do seu serviço no <code>docker-compose.yaml</code></p>
+</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">service_name</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.9</span><span class="w"></span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span><span class="w"></span>
+<span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><em>Nomeie os estágios do seu build</em></li>
+</ul>
+</div>
+<h3 id="evite-utilizar-imagens-do-alpine">Evite utilizar imagens do Alpine</h3>
+<p>Usar Alpine para obter imagens menores é possível, mas vem com alguns desafios:</p>
+<ul>
+<li>Avaliar os compiladores necessários e os cabeçalhos das bibliotecas</li>
+<li>Ter um profundo entendimento da construção de imagens Docker com multi-stage builds</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Quando um projeto Python é implantado, <strong>NÃO É RECOMENDADO</strong> usar imagens Alpine como base.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Sem os cabeçalhos das bibliotecas necessárias, o container não vai buildar</p>
+<p>Sem conhecimento sobre como as camadas e estágios do Docker funcionam, a imagem final pode ser maior do que uma imagem produzida sem Alpine devido a ferramentas de compilação desnecessárias na imagem final.</p>
+</div>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+      
+        
+        <a href="../desafio/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Desafio" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              Desafio
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../helm/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Helm" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              Helm
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "content.code.annotate", "navigation.instant", "navigation.footer"], "search": "../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de Transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de Transfer\u00eancia", "search.config.lang": "pt", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Buscar", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Perdido", "select.version.title": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.6c7ad80a.min.js"></script>
+      
+    
+  </body>
+</html>

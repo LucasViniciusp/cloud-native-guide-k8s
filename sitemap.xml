@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/desafio/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/docker/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/helm/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/kubernetes/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://lucasviniciusp.github.io/cloud-native-guide-k8s/resolution/</loc>
+         <lastmod>2025-03-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>

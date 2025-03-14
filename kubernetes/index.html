@@ -1,0 +1,1422 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lucasviniciusp.github.io/cloud-native-guide-k8s/kubernetes/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
+    
+    
+      
+        <title>Kubernetes - Cloud Native</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1d29e8d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Cloud Native" class="md-header__button md-logo" aria-label="Cloud Native" data-md-component="logo">
+      
+  <img src="../assets/instruct.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Cloud Native
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kubernetes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Limpar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Cloud Native" class="md-nav__button md-logo" aria-label="Cloud Native" data-md-component="logo">
+      
+  <img src="../assets/instruct.png" alt="logo">
+
+    </a>
+    Cloud Native
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desafio/" class="md-nav__link">
+        Desafio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../helm/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Kubernetes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Kubernetes
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kind-install" class="md-nav__link">
+     Kind Install
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criando-um-cluster-kubernetes" class="md-nav__link">
+    Criando um Cluster Kubernetes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-the-cluster" class="md-nav__link">
+    Interacting with the Cluster
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the Cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-basic-usage" class="md-nav__link">
+    Kubectl Basic Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-a-kubernetes-dashboard-ui" class="md-nav__link">
+    Deploying a kubernetes Dashboard UI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-dashboard-ui" class="md-nav__link">
+    Accessing the Dashboard UI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-pod-e-deployments" class="md-nav__link">
+    Configuração de Pod e Deployments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-de-configmaps-e-secrets" class="md-nav__link">
+    Criação de ConfigMaps e Secrets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-services-e-ingress" class="md-nav__link">
+    Configuração de Services e Ingress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-um-volume" class="md-nav__link">
+    Configuração de um Volume
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destruindo-um-cluster" class="md-nav__link">
+    Destruindo um Cluster
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resolution/" class="md-nav__link">
+        Desafio
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Indice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Indice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kind-install" class="md-nav__link">
+     Kind Install
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criando-um-cluster-kubernetes" class="md-nav__link">
+    Criando um Cluster Kubernetes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-the-cluster" class="md-nav__link">
+    Interacting with the Cluster
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the Cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-basic-usage" class="md-nav__link">
+    Kubectl Basic Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-a-kubernetes-dashboard-ui" class="md-nav__link">
+    Deploying a kubernetes Dashboard UI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-dashboard-ui" class="md-nav__link">
+    Accessing the Dashboard UI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-pod-e-deployments" class="md-nav__link">
+    Configuração de Pod e Deployments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-de-configmaps-e-secrets" class="md-nav__link">
+    Criação de ConfigMaps e Secrets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-services-e-ingress" class="md-nav__link">
+    Configuração de Services e Ingress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-um-volume" class="md-nav__link">
+    Configuração de um Volume
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destruindo-um-cluster" class="md-nav__link">
+    Destruindo um Cluster
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/LucasViniciusp/cloud-native-guide-k8s/edit/master/docs/kubernetes.md" title="Editar esta página" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="kubernetes">Kubernetes</h1>
+<p>O Kubernetes é uma plataforma de orquestração de contêineres que oferece um conjunto de APIs que permitem a automação e o gerenciamento eficiente de aplicativos em contêineres.</p>
+<h2 id="kind-install"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.95 13.5h-.23c-.18.11-.26.32-.18.5l.86 2.11c.83-.53 1.46-1.32 1.79-2.25l-2.23-.36h-.01m-3.45.29a.415.415 0 0 0-.38-.29h-.08l-2.22.37c.33.92.96 1.7 1.79 2.23l.85-2.07V14c.04-.05.04-.14.04-.21m1.83.81a.378.378 0 0 0-.51-.15c-.07.05-.12.08-.15.15h-.01l-1.09 1.97c.78.26 1.62.31 2.43.12.14-.03.29-.07.43-.12l-1.09-1.97h-.01m3.45-4.57L14.1 11.5l.01.03a.37.37 0 0 0-.04.53c.05.06.11.1.18.12l.01.01 2.17.62c.07-.97-.14-1.95-.65-2.78m-3.11.16c.01.21.18.37.39.36.08 0 .15-.02.21-.05h.01l1.83-1.31a4.45 4.45 0 0 0-2.57-1.24l.13 2.24m-1.94.31c.17.11.4.08.52-.09.05-.06.07-.13.08-.21h.01l.12-2.25c-.15.02-.3.05-.46.08-.8.18-1.54.58-2.12 1.16l1.84 1.31h.01m-.99 1.69c.2-.05.32-.26.26-.46 0-.08-.05-.14-.11-.19v-.01L8.21 10c-.52.86-.74 1.84-.63 2.82l2.16-.62v-.01m1.64.66.62.3.62-.3.15-.67-.43-.53h-.69l-.43.53.16.67m10.89 1.32L20.5 6.5c-.09-.42-.37-.76-.74-.94l-7.17-3.43c-.37-.17-.81-.17-1.19 0L4.24 5.56c-.37.18-.65.52-.74.94l-1.77 7.67c-.05.2-.05.4 0 .59.01.06.03.12.05.18.03.09.08.19.13.27.03.04.05.08.09.11l4.95 6.18c.02 0 .05.04.05.06.1.09.19.16.28.22.12.08.26.14.4.17.11.05.23.05.32.05h8.12c.07 0 .14-.03.2-.05.05-.01.1-.03.14-.04.04-.02.07-.03.11-.05.05-.02.1-.05.15-.08.12-.08.23-.18.33-.28l.15-.2 4.8-5.98c.1-.12.17-.25.22-.38.02-.06.04-.12.05-.18.05-.19.05-.4 0-.59m-7.43 2.99c.02.06.04.12.07.17-.04.08-.06.17-.03.26.12.24.23.46.38.68.08.11.16.23.24.34 0 .03.03.08.04.12.12.2.06.46-.15.59s-.47.05-.59-.15c-.01-.03-.02-.05-.03-.08-.02-.03-.04-.09-.06-.09-.05-.15-.09-.28-.12-.41-.09-.25-.17-.49-.3-.72a.375.375 0 0 0-.21-.14l-.08-.16c-1.29.48-2.7.48-3.97-.01l-.1.18c-.07.01-.14.04-.19.09-.14.24-.24.49-.33.77-.03.13-.07.26-.12.4-.02 0-.04.07-.06.1a.43.43 0 0 1-.81-.29c.01-.03.03-.05.04-.08.04-.03.04-.08.04-.11.09-.12.16-.23.24-.35.16-.21.29-.45.39-.69a.54.54 0 0 0-.03-.25l.07-.18a5.611 5.611 0 0 1-2.47-3.09l-.2.03a.388.388 0 0 0-.23-.09c-.27.05-.51.13-.77.22-.11.06-.24.11-.37.15-.03.01-.07.02-.13.03a.438.438 0 0 1-.54-.27c-.07-.23.04-.47.28-.55.02 0 .05-.01.08-.01v-.01h.01l.11-.02c.14-.04.28-.04.41-.04.26 0 .52-.06.77-.12.08-.05.14-.11.19-.19l.19-.05c-.21-1.36.1-2.73.86-3.87l-.14-.12c0-.09-.03-.18-.08-.25-.2-.17-.41-.32-.64-.45-.12-.06-.24-.13-.36-.21-.02-.02-.06-.05-.08-.07l-.01-.01c-.2-.16-.25-.42-.11-.63.09-.1.21-.15.35-.15.11.01.21.05.3.12l.09.07c.1.09.19.2.28.3.18.19.37.37.58.52.08.04.17.05.26.03l.15.11c.75-.8 1.73-1.36 2.8-1.6.25-.06.52-.1.78-.12l.01-.18a.45.45 0 0 0 .14-.23c.01-.26-.01-.52-.05-.77-.03-.13-.05-.27-.06-.41V5.1c-.02-.24.15-.45.39-.48s.44.15.47.38v.22c-.01.14-.03.28-.06.41-.04.25-.06.51-.05.77.02.1.07.17.14.22l.01.19c1.36.12 2.62.73 3.56 1.72l.16-.12c.09.02.18.01.26-.03.21-.15.41-.33.58-.52.09-.1.18-.2.28-.3.03-.02.07-.06.1-.06.17-.18.44-.18.59 0 .19.16.18.43 0 .6 0 .02-.03.04-.06.06a2.495 2.495 0 0 1-.44.28c-.23.13-.45.28-.64.45-.06.07-.09.15-.08.24l-.16.14a5.44 5.44 0 0 1 .88 3.86l.19.05c.04.08.11.14.19.18.25.07.51.11.77.14h.41c.03.03.08.04.12.05.24.03.4.25.37.49-.05.23-.24.4-.48.37-.03-.01-.07-.01-.07-.02v-.01c-.06 0-.1-.01-.14-.02-.13-.04-.25-.09-.36-.15-.26-.1-.5-.17-.77-.21-.09 0-.17 0-.23.08-.07-.01-.13-.02-.19-.03-.41 1.31-1.31 2.41-2.47 3.11Z"/></svg></span> Kind Install</h2>
+<div class="admonition note">
+<p class="admonition-title">Kind é uma ferramenta que permite executar clusters Kubernetes locais usando contêineres Docker</p>
+</div>
+<p>Para praticarmos, criaremos uma pequeno cluster utilizando o <a href="https://kind.sigs.k8s.io/">Kind (Kubernetes in Docker)</a> para usarmos de exemplo</p>
+<div class="admonition warning">
+<p class="admonition-title">Requirements</p>
+<ul>
+<li><a href="../docker/">Docker</a> Installed</li>
+<li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">kubectl</a> Installed</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Installer Script</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># For AMD64 / x86_64</span>
+<span class="o">[</span> <span class="k">$(</span>uname -m<span class="k">)</span> <span class="o">=</span> x86_64 <span class="o">]</span> <span class="o">&amp;&amp;</span> curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-amd64
+<span class="c1"># For ARM64</span>
+<span class="o">[</span> <span class="k">$(</span>uname -m<span class="k">)</span> <span class="o">=</span> aarch64 <span class="o">]</span> <span class="o">&amp;&amp;</span> curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+</code></pre></div></td></tr></table></div>
+</div>
+<h2 id="criando-um-cluster-kubernetes">Criando um Cluster Kubernetes</h2>
+<div class="admonition example">
+<p class="admonition-title">Crie um cluster executando o seguinte comando:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>kind create cluster
+kubectl cluster-info
+</code></pre></div></td></tr></table></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Para um cluster mais personalizado, use um arquivo <code>config.yaml</code> com a configuração de cluster desejada:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cluster</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kind.x-k8s.io/v1alpha4</span><span class="w"></span>
+<span class="nt">nodes</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">control-plane</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kind create cluster --config config.yaml
+</code></pre></div></td></tr></table></div>
+<p><strong>Neste exemplo, definimos um cluster com um <code>control-plane</code> e dois <code>workers</code></strong></p>
+</div>
+<p>Você deve conseguir ver os nós do cluster em execução com o comando: <code>docker ps</code>:</p>
+<div class="admonition tip">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">isntruct</span><span class="nd">@DESKTOP</span><span class="p">:</span><span class="o">~/</span><span class="n">home</span><span class="o">/</span><span class="n">kind</span><span class="err">$</span> <span class="n">docker</span> <span class="n">ps</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>                  <span class="n">COMMAND</span>                  <span class="n">CREATED</span>              <span class="n">STATUS</span>              <span class="n">PORTS</span>                       <span class="n">NAMES</span>
+<span class="mi">3</span><span class="n">d5138d41558</span>   <span class="n">kindest</span><span class="o">/</span><span class="n">node</span><span class="p">:</span><span class="n">v1</span><span class="mf">.27.1</span>   <span class="s2">&quot;/usr/local/bin/entr…&quot;</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>                               <span class="n">kind</span><span class="o">-</span><span class="n">worker</span>
+<span class="mi">7</span><span class="n">ff553f3ee0f</span>   <span class="n">kindest</span><span class="o">/</span><span class="n">node</span><span class="p">:</span><span class="n">v1</span><span class="mf">.27.1</span>   <span class="s2">&quot;/usr/local/bin/entr…&quot;</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>                               <span class="n">kind</span><span class="o">-</span><span class="n">worker2</span>
+<span class="mi">4</span><span class="n">ccd303f4e07</span>   <span class="n">kindest</span><span class="o">/</span><span class="n">node</span><span class="p">:</span><span class="n">v1</span><span class="mf">.27.1</span>   <span class="s2">&quot;/usr/local/bin/entr…&quot;</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>   <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">35617</span><span class="o">-&gt;</span><span class="mi">6443</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">kind</span><span class="o">-</span><span class="n">control</span><span class="o">-</span><span class="n">plane</span>
+</code></pre></div></td></tr></table></div>
+</div>
+<h2 id="interacting-with-the-cluster">Interacting with the Cluster</h2>
+<p>Depois de criar um cluster, você pode usar <code>kubectl</code> para interagir com ele usando o arquivo de configuração gerado por kind.</p>
+<p>Por padrão, a configuração de acesso ao cluster é armazenada em ${HOME}/.kube/config se a variável de ambiente <code>$KUBECONFIG</code> não estiver definida.</p>
+<h3 id="kubectl-basic-usage">Kubectl Basic Usage</h3>
+<div class="admonition note">
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Verificar a versão do cliente e do servidor Kubernetes</span>
+kubectl version
+
+<span class="c1"># Obter informações sobre os componentes do cluster</span>
+kubectl cluster-info
+
+<span class="c1"># Verificar o status de saúde dos nós do cluster</span>
+kubectl get nodes
+
+<span class="c1"># Obter informações sobre um ou mais recursos</span>
+kubectl get &lt;resouce&gt; -n &lt;namespace&gt;
+kubectl get namespaces -A <span class="c1"># -A: get resources on all namespaces</span>
+
+<span class="c1"># Criar um namespace</span>
+kubectl create namespace &lt;namespace&gt;
+
+<span class="c1"># Trocar para um namespace específico</span>
+kubectl config set-context --current --namespace<span class="o">=</span>&lt;namespace&gt;
+
+<span class="c1"># Listar os serviços disponíveis</span>
+kubectl get services
+
+<span class="c1"># Listar os deployments disponíveis</span>
+kubectl get deployments
+
+<span class="c1">#View cluster events:</span>
+kubectl get events
+
+<span class="c1"># Exibir eventos relacionados a um recurso</span>
+kubectl describe events
+
+<span class="c1">#View the kubectl configuration:</span>
+kubectl config view
+
+<span class="c1"># Verificar a utilização de recursos (CPU, memória) por um Pod</span>
+kubectl top pod my-pod
+
+<span class="c1"># Obter informações sobre um pod em formato YAML/JSON</span>
+kubectl get pod &lt;pod&gt; -o yaml/json
+
+<span class="c1"># Criar um novo recurso</span>
+kubectl create &lt;resource&gt; &lt;-optins&gt;
+kubectl create deployment my-deployment --image<span class="o">=</span>my-image:tag --replicas<span class="o">=</span><span class="m">2</span>
+
+<span class="c1"># Redimensionar o número de réplicas de um conjunto de réplicas (Deployment)</span>
+kubectl scale deployment/&lt;deployment-name&gt; --replicas<span class="o">=</span><span class="m">3</span>
+
+<span class="c1"># Apagar um ou mais recursos</span>
+kubectl delete &lt;resouce&gt; &lt;resource-name&gt;
+kubectl delete pod my-pod
+
+<span class="c1"># Exibir detalhes de um recurso específico</span>
+kubectl describe &lt;resource&gt; -n &lt;namespace&gt;
+kubectl describe pod my-pod -n &lt;namespace&gt;
+
+<span class="c1"># Executar um comando em um contêiner de um Pod</span>
+kubectl <span class="nb">exec</span> &lt;pod-name&gt; -n &lt;namespace&gt; -- &lt;command&gt;
+kubectl <span class="nb">exec</span> my-pod -n &lt;namespace&gt; -- ls /app
+
+<span class="c1"># Executar um comando específico em todos os Pods de um conjunto de réplicas</span>
+kubectl <span class="nb">exec</span> deployment/&lt;deployment-name&gt; -- ls /app
+
+<span class="c1"># Criar um Pod temporário para executar um comando de depuração</span>
+kubectl debug my-pod --image<span class="o">=</span>debug-image:latest
+
+<span class="c1"># Acompanhar os logs de um Pod</span>
+kubectl logs &lt;pod-name&gt; 
+
+<span class="c1"># Acessar a linha de comando de um contêiner em execução em um Pod</span>
+kubectl attach &lt;pod-name&gt; -c &lt;container-name&gt;
+kubectl attach my-pod -c &lt;container-name&gt;
+
+<span class="c1"># Expor um serviço para acesso externo</span>
+kubectl expose deployment &lt;deployment-name&gt; --port<span class="o">=</span>&lt;port&gt;
+kubectl expose deployment my-deployment --port<span class="o">=</span><span class="m">8080</span>
+
+<span class="c1"># Criar um encaminhamento de porta para acessar um Pod</span>
+kubectl port-forward &lt;pod-name&gt; &lt;container-port&gt;:&lt;host-port&gt;
+kubectl port-forward my-pod <span class="m">8080</span>:80
+
+<span class="c1"># Criar um secret a partir de um arquivo ou valor</span>
+kubectl create secret &lt;type&gt; &lt;secret-name&gt; --from-file<span class="o">=</span>&lt;secret-file&gt;.txt
+kubectl create secret generic my-secret --from-file<span class="o">=</span>my-secret-file.txt
+
+<span class="c1"># Criar um ingress para rotear o tráfego externo para um serviço</span>
+kubectl create ingress my-ingress --rule<span class="o">=</span><span class="nv">host</span><span class="o">=</span>my-domain.com
+
+<span class="c1"># Criar um Job para executar uma tarefa em lote</span>
+kubectl create job my-job --image<span class="o">=</span>my-image:tag
+
+<span class="c1"># Criar um cronjob para executar tarefas em intervalos regulares</span>
+kubectl create cronjob my-cronjob --schedule<span class="o">=</span><span class="s2">&quot;0 0 * * *&quot;</span>
+
+<span class="c1"># Criar um PersistentVolume e PersistentVolumeClaim</span>
+kubectl create persistentvolume my-pv --size<span class="o">=</span>1Gi
+
+<span class="c1"># Criar um ConfigMap a partir de um arquivo de configuração</span>
+kubectl create configmap my-configmap --from-file<span class="o">=</span>my-config.txt
+
+<span class="c1"># Atualizar a configuração de um recurso</span>
+kubectl edit deployment/&lt;deployment-name&gt;
+
+<span class="c1"># Atualizar a imagem de um Pod em execução</span>
+kubectl <span class="nb">set</span> image pod/my-pod my-container<span class="o">=</span>my-image:tag
+
+<span class="c1"># Visualizar o estado de um rollout (deployment, replicaset, etc.)</span>
+kubectl rollout status deployment/&lt;deployment-name&gt;
+</code></pre></div></td></tr></table></div>
+</div>
+<blockquote>
+<p>Note: Para mais informações sobre o utilitário <code>kubectl</code>, veja: <a href="https://kubernetes.io/docs/reference/kubectl/">kubectl overview</a>.</p>
+</blockquote>
+<h3 id="deploying-a-kubernetes-dashboard-ui">Deploying a kubernetes Dashboard UI</h3>
+<div class="admonition tip">
+<p>O kubernetes não possui uma interface grafica, mas podemos instalar uma com os seguintes comandos:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml</span><span class="w"></span>
+
+<span class="l l-Scalar l-Scalar-Plain"># Via helm</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">helm install dashboard kubernetes-dashboard/kubernetes-dashboard -n kubernetes-dashboard --create-namespace</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Tenha acesso a Dashboard do Kubernetes executando:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">export</span> <span class="nv">POD_NAME</span><span class="o">=</span><span class="k">$(</span>kubectl get pods -n kubernetes-dashboard -l <span class="s2">&quot;app.kubernetes.io/name=kubernetes-dashboard,app.kubernetes.io/instance=dashboard&quot;</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.items[0].metadata.name}&quot;</span><span class="k">)</span>
+<span class="nb">echo</span> https://127.0.0.1:8443/
+kubectl -n kubernetes-dashboard port-forward <span class="nv">$POD_NAME</span> <span class="m">8443</span>:8443
+</code></pre></div></td></tr></table></div>
+<p><strong><em>Agora você apenas precisa acessar: <a href="https://localhost:8443/#/login">https://localhost:8443</a></em></strong></p>
+</div>
+<p>A dashboard tambem pode ser acessada via <code>proxy</code>:</p>
+<div class="admonition tip">
+<p class="admonition-title">Isso fará o proxy dos endpoints do cluster do Kubernetes para o host, para que possamos acessá-los</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl proxy
+</code></pre></div></td></tr></table></div>
+<p>E então sua dashboard estará disponivel neste endereço: <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:dashboard-kubernetes-dashboard:https/proxy/#/login">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:dashboard-kubernetes-dashboard:https/proxy/#/login</a></p>
+</div>
+<h3 id="accessing-the-dashboard-ui">Accessing the Dashboard UI</h3>
+<p>Precisamos criar um usuário e anexar a permissão necessária para acessar a dashboard</p>
+<p><strong><em>Criando um usuário</em></strong></p>
+<div class="admonition danger">
+<p class="admonition-title">Conceder privilégios de administrador à <code>service-account</code> da Dashboard pode ser um risco de segurança</p>
+</div>
+<p><strong><em>Criando uma Service Accout</em></strong></p>
+<div class="admonition note">
+<p class="admonition-title">service-account.yaml</p>
+<ul>
+<li>Isso criará uma <code>service-account</code> com o nome <code>admin-user</code> no namespace <code>kubernetes-dashboard</code>:</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes-dashboard</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+</div>
+<p><strong><em>Criando uma ClusterRoleBinding</em></strong></p>
+<div class="admonition note">
+<p class="admonition-title">cluster-role-binding.yaml</p>
+</div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRoleBinding</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span><span class="w"></span>
+<span class="nt">roleRef</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span><span class="w"></span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster-admin</span><span class="w"></span>
+<span class="nt">subjects</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes-dashboard</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p><strong><em>Execute um Apply nos manifestos</em></strong></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f service-account.yaml -f cluster-role-binding.yaml
+</code></pre></div></td></tr></table></div>
+<p><strong><em>Crie um Bearer Token</em></strong></p>
+<p>Para obter o token que podemos usar para fazer login, execute o seguinte comando:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">kubectl -n kubernetes-dashboard create token admin-user</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="configuracao-de-pod-e-deployments"><strong><em>Configuração de Pod e Deployments</em></strong></h3>
+<p><strong><em>pods</em></strong></p>
+<p>Use o comando <code>kubectl create</code> para criar um pod. O pod executa um contêiner com base na imagem fornecida.</p>
+<p>Via kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl run my-pod --image<span class="o">=</span>my-image:tag --port<span class="o">=</span><span class="m">8080</span>
+</code></pre></div></td></tr></table></div>
+<p>Usando um arquivo YAML:</p>
+<ul>
+<li>Crie um arquivo YAML chamado <code>pod.yaml</code> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">pod.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pod</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-container</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-image:tag</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Em seguida, aplique o arquivo YAML usando o seguinte comando:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f pod.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Veja the Pod:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get pods &lt;pod-name&gt; -n &lt;namespace&gt;
+</code></pre></div></td></tr></table></div>
+<p>A saída do comando deve ser similar:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME                      READY   STATUS    RESTARTS      AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">my-pod-h5qcc              1/1     Running   0             24m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">cloud-native-9rbfn        1/1     Running   0             24m</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p><strong><em>Deployment</em></strong></p>
+<p>Use o comando kubectl create para criar um <code>Deployment</code> que gerencia um <code>pod</code>. O <code>pod</code> executa um contêiner com base na imagem fornecida.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Run a test container image that includes a webserver</span>
+kubectl create deployment hello-node --image<span class="o">=</span>registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port<span class="o">=</span><span class="m">8080</span>
+</code></pre></div></td></tr></table></div>
+<p>Para realizar o deployment via yaml:</p>
+<div class="admonition note">
+<p class="admonition-title">deployment.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx-deployment</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx:1.14.2</span><span class="w"></span>
+<span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>apply that deployment manifest on cluster running:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">kubectl apply -f deployment.yaml</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>Isso criará um <code>Deployment</code> e um <code>ReplicaSet</code> no namespace <code>default</code>, para subir 3 pods de nginx</li>
+</ul>
+</div>
+<p>Veja o Deployment:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get deployments hello-node -n &lt;namespace&gt;
+</code></pre></div></td></tr></table></div>
+<p>A saida do comando deve ser similar:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME         READY   UP-TO-DATE   AVAILABLE   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">hello-node   3/3     3            3           1m</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="criacao-de-configmaps-e-secrets"><strong><em>Criação de ConfigMaps e Secrets</em></strong></h3>
+<p>Crie e configure um ConfigMap e Secrets usando kubectl e YAML</p>
+<p><strong><em>ConfigMap</em></strong></p>
+<p>via Kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl create configmap &lt;configmap-name&gt; --from-literal<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>value1 --from-literal<span class="o">=</span><span class="nv">key2</span><span class="o">=</span>value2
+</code></pre></div></td></tr></table></div>
+<p>via yaml:</p>
+<ul>
+<li>Crie um arquivo yaml chamado <code>configmap.yaml</code> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">configmap.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;configmap-name&gt;</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value2</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Then apply the YAML manifest:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f configmap.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Veja os ConfigMaps:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get configmap &lt;configmap-name&gt; -n &lt;namespace&gt;
+</code></pre></div></td></tr></table></div>
+<p>A saida do comando deve ser similar:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME                            DATA   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">&lt;configmap-name&gt;                0      3h15m</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<hr>
+
+<p><strong><em>Secrets</em></strong></p>
+<p>Via Kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl create secret generic &lt;secret-name&gt; --from-literal<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>value1 --from-literal<span class="o">=</span><span class="nv">key2</span><span class="o">=</span>value2
+</code></pre></div></td></tr></table></div>
+<p>Via YAML:</p>
+<ul>
+<li>Crie um arquivo yaml chamado <code>secrets.yaml</code> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">secrets.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;secret-name&gt;</span><span class="w"></span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dmFsdWUx</span><span class="w">    </span><span class="c1"># Base64 encoded value1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dmFsdWUy</span><span class="w">    </span><span class="c1"># Base64 encoded value2</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Certifique-se de codificar os valores no formato <code>Base64</code> antes de adicioná-los ao arquivo YAML.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f secret.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Veja as secrets:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get secret -A
+</code></pre></div></td></tr></table></div>
+<p>A saida deve ser semelhante:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME                                   TYPE                 DATA   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">&lt;secret-name&gt;                          Opaque               2      2h12m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">dashboard-kubernetes-dashboard-certs   Opaque               0      3h16m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">kubernetes-dashboard-csrf              Opaque               1      3h16m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">kubernetes-dashboard-key-holder        Opaque               2      3h16m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">sh.helm.release.v1.dashboard.v1        helm.sh/release.v1   1      3h16m</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="configuracao-de-services-e-ingress"><strong><em>Configuração de Services e Ingress</em></strong></h3>
+<p>Crie e configure um <code>service</code> e um <code>ingress</code> usando kubectl e YAML:</p>
+<p><strong><em>Services</em></strong></p>
+<p><strong><em>Tipos disponiveis</em></strong></p>
+<p>Os tipos de serviço do Kubernetes permitem que você especifique o tipo de serviço que deseja.</p>
+<div class="admonition note">
+<p><strong><em>ClusterIP</em></strong></p>
+<ul>
+<li>Expõe o serviço em um IP interno do cluster;</li>
+<li>Esse tipo torna o serviço acessível apenas de dentro do cluster;</li>
+<li>Esse é o tipo padrão de service utilizado se nenhum valor for definido;</li>
+</ul>
+<p><strong><em>NodePort</em></strong></p>
+<ul>
+<li>Expõe o serviço no IP de cada nó em uma porta estática (o NodePort).</li>
+</ul>
+<p><strong><em>LoadBalancer</em></strong></p>
+<ul>
+<li>Expõe o serviço externamente usando um load-balancer externo;</li>
+</ul>
+<p><strong><em>ExternalName</em></strong></p>
+<ul>
+<li>Permite expor um serviço externo através de um DNS personalizado;</li>
+</ul>
+</div>
+<p>Via kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl expose deployment &lt;deployment&gt; -n &lt;namespace&gt; --type<span class="o">=</span>&lt;service-type&gt; --port<span class="o">=</span><span class="m">80</span> --target-port<span class="o">=</span><span class="m">8080</span>
+</code></pre></div></td></tr></table></div>
+<p>Via YAML:</p>
+<ul>
+<li>Crie um arquivo YAML chamado <service.yaml> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">service.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;service-name&gt;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&lt;selector-label&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;selector-value&gt;</span><span class="w"></span>
+<span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;protocol&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;port&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">targetPort</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;target-port&gt;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Then apply the YAML manifest:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f service.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Veja os Services:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get service &lt;service-name&gt;
+</code></pre></div></td></tr></table></div>
+<p>A saida deve ser semelhante:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME                    TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">&lt;service-name&gt;          ClusterIP   10.96.143.1   &lt;none&gt;        443/TCP   3h18m</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<hr>
+
+<p><strong><em>Ingress</em></strong></p>
+<p>Via kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl create ingress &lt;ingress-name&gt; --rule<span class="o">=</span>&lt;rule-pattern&gt;
+</code></pre></div></td></tr></table></div>
+<p>Via YAML:</p>
+<ul>
+<li>Crie um arquivo YAML chamado <code>ingress.yaml</code> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">ingress.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;ingress-name&gt;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host-pattern&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">service</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;backend-service&gt;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;backend-service-port&gt;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Then apply the YAML manifest:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f ingress.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Vejá o Ingress:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get ingress
+</code></pre></div></td></tr></table></div>
+<p>A saida deve ser semelhante:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME           CLASS    HOSTS                          ADDRESS   PORTS   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">cloud-native   &lt;none&gt;   instruct.cloud-native.com.br             80      7s</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="configuracao-de-um-volume"><strong><em>Configuração de um Volume</em></strong></h3>
+<p>Via kubectl:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl create -f &lt;volume-manifest.yaml&gt;
+</code></pre></div></td></tr></table></div>
+<p>Via YAML:</p>
+<ul>
+<li>Crie um arquivo YAML chamado <code>volume-manifest.yaml</code> com o seguinte conteúdo:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">volume.yaml</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolume</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;volume-name&gt;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;storage-size&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;access-mode&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host-path&gt;</span><span class="w"></span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;pvc-name&gt;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;access-mode&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;storage-size&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;volume-name&gt;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Then apply the YAML manifest:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl apply -f volume.yaml
+</code></pre></div></td></tr></table></div>
+</div>
+<p>Veja os <code>Persistence Volume Clain</code>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get pvc
+</code></pre></div></td></tr></table></div>
+<p>A saida deve ser semelhante:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">NAME               CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                             STORAGECLASS   REASON   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">pvc-043ed9c1-...   8Gi        RWO            Delete           Bound    default/data-grafana-loki-1686599256-querier-0    standard                15m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">pvc-188f0d07-...   8Gi        RWO            Delete           Bound    default/grafana-loki-1686599438-compactor         standard                12m</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>Veja os <code>Persistence Volume</code>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kubectl get pv
+</code></pre></div></td></tr></table></div>
+<p>A saida deve ser semelhante:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">luke@DESKTOP-7A3AHF1:~/luke/kind$ kubectl get pvc</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">data-689256-0   Bound    pvc-6a2c5557-21b3-46a1-abee-b79c79bcabd8   8Gi        RWO            standard       15m</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">data-18656-0    Bound    pvc-043ed9c1-8441-4e1c-9fbb-49c4f58b3140   8Gi        RWO            standard       15m</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="destruindo-um-cluster">Destruindo um Cluster</h2>
+<p>Se você criou um cluster com kind create cluster, a exclusão é igualmente simples:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>kind delete cluster
+</code></pre></div></td></tr></table></div>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+      
+        
+        <a href="../helm/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Helm" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              Helm
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../resolution/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Desafio" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              Desafio
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "content.code.annotate", "navigation.instant", "navigation.footer"], "search": "../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de Transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de Transfer\u00eancia", "search.config.lang": "pt", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Buscar", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Perdido", "select.version.title": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.6c7ad80a.min.js"></script>
+      
+    
+  </body>
+</html>
